@@ -108,7 +108,7 @@ filter.country <- function(df, country.name) {
 covid.estimate.r0 <- function (epid.country, CDC.GT = FALSE, end.date = 13) {
   # Use as inition conditions GT ~ CDC(GT)
   # End date is a parameter only if CDC.GT = FALSE
-  gen <- generation.time(type=c("gamma"), c(mean=3.94,3.75))
+  gen <- generation.time(type=c("gamma"), c(mean=3.96,4.75))
   if (CDC.GT) {
     res <- estimate.R(epid.country,GT=gen,methods=c("ML"), end=13)
   }
