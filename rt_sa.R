@@ -2,6 +2,9 @@
 library(EpiEstim)
 
 names(sa.cs)
+file.choose()
+sa.cs=read.csv("C:\\Users\\bvalc\\Documents\\south america.csv",head=T,sep=",")
+View(sa.cs)
 
 extract.countries <- function (df, country.name) {
  df2<- df%>%
@@ -15,7 +18,7 @@ rt.estimate <- function (time.country){
                    config = make_config(list( 
                     mean_si = 3.96, std_si = 4.75,
                      t_start = 2:(nrow(time.country)-5), 
-                     t_end = 7:nrow(time.country)))
+                     t_end = 7:nrow(time.country))))
   return(res)
  }
 
@@ -32,23 +35,25 @@ rt.estimate.SA <- function(df) {
 }
 
 
-rt.estimate.SA (sa.cs)
 
 
+t = function (df) {
+ tab<-data.frame(df$R$t_start, df$R$t_end,df$R$Mean, df$R$Quantile.0.025, df$R$Quantile.0.25)
+ names(tab)<-c("day.start","day.end","Rt","lower","upper")
+ tail(tab,1)
+return (tab)
+}
 
-
+str(sa.cs)
 
 bra=sa.cs%>%
  filter(countries=="Brazil")%>%
- select(cases)
-%>%
+ select(cases)%>%
  rt.estimate()
 
 per=sa.cs%>%
  filter(countries=="Peru")%>%
- select(cases)
-
-%>%
+ select(cases)%>%
  rt.estimate()
 
 arg=sa.cs%>%
@@ -81,19 +86,72 @@ ven=sa.cs%>%
  select(cases)%>%
  rt.estimate()
 
+col=sa.cs%>%
+ filter(countries=="Colombia")%>%
+ select(cases)%>%
+ rt.estimate()
+
+ecu=sa.cs%>%
+ filter(countries=="Ecuador")%>%
+ select(cases)%>%
+ rt.estimate()
+
+write.csv (sa.cs, file = "south america.csv")
+
+br<-tail(t(bra),1)
+ch<-tail(t(chi),1)
+ec<-tail(t(ecu),1)
+ar<-tail(t(arg),1)
+pe<-tail(t(per),1)
+co<-tail(t(col),1)
+pa<-tail(t(par),1)
+bo<-tail(t(bol),1)
+ur<-tail(t(uru),1)
+ve<-tail(t(ven),1)
+
+country<-c("braz","chil","ecua","arge","peru","colo","para","bolo","urug","vene")
+
+rt<-rbind(br,ch,ec,ar,pe,co,pa,bo,ur,ve)
+rt<-cbind(country,rt)
+str(rt)
+
+write.table(rt, file="rt countries.txt", sep=",",
+            ,row.names=T,quote=F)
 
 
 
 
-per[R]
-
- R$t_start
-
- df$t_end, 
-
-per$R$Mean, R$Quantile.0.025, R$Quantile.0.25
+#########################
 
 
+br<-t(bra)
+ch<-t(chi)
+ec<-t(ecu)
+ar<-t(arg)
+pe<-t(per)
+co<-t(col)
+pa<-t(par)
+bo<-t(bol)
+ur<-t(uru)
+ve<-t(ven)
+
+library(ggplot2)
+plot(bra)
+length(br$Rt)
+str(br)
+br
+names(br)
+
+br
+
+ggplot(br, aes(x=day.end,y=Rt))+
+ geom_line(size=1)+
+ geom_ribbon(aes(ymin = lower, ymax = upper),alpha = .25)+
+ geom_hline(yintercept=1,linetype="dashed",size=0.8)+
+ theme_bw()+
+ xlab("Days")+
+ ylab("Time-varying \n reproduction number")
+ 
 
 
 
@@ -103,17 +161,14 @@ per$R$Mean, R$Quantile.0.025, R$Quantile.0.25
 
 
 
-unique(sa.cs$countries)
 
 
-res<- estimate_R(incid = peru$cases,
-  method = "parametric_si",
-  config = make_config(list(
-           mean_si = 3.96, std_si = 4.75,
-  t_start = 2:33, t_end=7:38)))
 
 
-res
-plot(res)
+
+
+
+
+
 
 
