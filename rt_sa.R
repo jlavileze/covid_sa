@@ -216,7 +216,7 @@ melt.lb.ts <- rt.cri.lb.ts %>%
   select(Day, Brazil, Chile, Ecuador, Argentina, Peru, Colombia, Paraguay, Bolivia, Uruguay, Venezuela) %>%
   gather(key = "Country", value="Lower", -Day)
 
-melt.ub.ts <- rt.cri.lb.ts %>%
+melt.ub.ts <- rt.cri.ub.ts %>%
   select(Day, Brazil, Chile, Ecuador, Argentina, Peru, Colombia, Paraguay, Bolivia, Uruguay, Venezuela) %>%
   gather(key = "Country", value="Upper", -Day)
 
@@ -230,42 +230,19 @@ ggplot(melt.ts, aes(x = Day, y = Rt)) +
   expand_limits(x=0) + 
   theme_minimal()
 
-ggplot(melt.all.ts, aes(x = Day, y = Rt)) +
+p <- ggplot(melt.all.ts, aes(x = Day, y = Rt)) +
   geom_line(size = 0.5) +
   facet_wrap(~Country, nrow=2, ncol=5) +
   geom_ribbon(aes(ymin = Lower, ymax = Upper, group=Country), alpha = .25) +
   xlab("Days since first case") +
   labs(y=expression(R[t][])) +
   geom_hline(yintercept=1,linetype="dashed",size=0.5, alpha = 0.7) +
-  expand_limits(x=0) + 
+  expand_limits(x=0) +
   theme_minimal()
 
+p
 
 
-head(melt.ts)
-
-plot.ts(rt.ts.no.day)
-
-library(ggplot2)
-plot(bra)
-length(br$Rt)
-str(br)
-br
-names(br)
-
-br
-
-ggplot(br, aes(x=day.end,y=Rt))+
- geom_line(size=1)+
- geom_ribbon(aes(ymin = lower, ymax = upper),alpha = .25) +
- geom_hline(yintercept=1,linetype="dashed",size=0.8)+
- theme_bw()+
- xlab("Days")+
- ylab("Time-varying \n reproduction number")
- 
-
-
-br
 
 
 
