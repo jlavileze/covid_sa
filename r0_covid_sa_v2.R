@@ -130,6 +130,6 @@ covid.estimate.SA <- function(df, CDC.GT = FALSE) {
 }
 
 SA.r0 <- covid.estimate.SA(sa.cs, TRUE)
-
+write.csv(sa.cs, file = "south america.csv")
 ## To-do: sensitivity analysis to R0 estimation period
 
